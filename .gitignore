@@ -4,5 +4,6 @@ out/
 coverage/
 .env*
 !.env.example
+certs/argocd-ca.crt
 npm-debug.log*
 *.tsbuildinfo
