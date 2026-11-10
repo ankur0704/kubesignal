@@ -95,15 +95,17 @@ To stop, press **Control+C** in both Terminal windows. This stops the dashboard 
 
 - Live Argo CD application list via a server-side bearer token
 - Search and out-of-sync filter over fetched applications
-- Application detail panel with live status and revision
+- Application detail panel with live status, revision, and resource tree
+- Read-only desired/live field comparison for a selected managed resource, with sensitive values redacted
+- Diff noise filtering for Kubernetes bookkeeping and common server defaults
+- Live summary counts for application health and Argo CD-reported drift
+- Live pod readiness, restart totals, replica mismatches, and failed Job counts from Argo CD managed resources
 - Read-only UI; no sync or remediation actions
 - Responsive layout
 
-The Argo CD API route maps upstream application data to a small response and never returns the token to the browser. Cluster health cards, activity feed, and quick insight remain illustrative. Field-level resource diffs and persistence are not implemented.
+The Argo CD API routes map upstream data to a small response and never return the token or raw workload manifests to the browser. Workload health is aggregated server-side from managed Pod, Deployment, StatefulSet, DaemonSet, and Job live state. Diffs suppress Kubernetes bookkeeping (`uid`, `resourceVersion`, `managedFields`, controller revision and kubectl last-applied annotations) and selected Service/Deployment/Pod defaults only when they are absent from desired state and match known defaults. Activity history is explicitly marked unavailable until event persistence exists. No database or authentication is included.
 
 ## Next steps
 
-1. Fetch resource details and field-level diffs; redact sensitive fields.
-2. Derive health summaries only from actual app and Kubernetes signals.
-3. Persist observed status transitions and drift events.
-4. Add authentication, per-user cluster authorization, and secret-manager support before production use.
+1. Persist observed status transitions and drift events.
+2. Add authentication, per-user cluster authorization, and secret-manager support before production use.
